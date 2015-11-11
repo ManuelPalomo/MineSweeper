@@ -21,12 +21,18 @@ public class Board {
 		this.sizeY = sizeY;
 		this.mines = mines;
 		this.board = setupBoard();
+
 	}
 
 	private int[][] setupBoard() {
 		int[][] board = initializeBoardToEmpty();
 		for (int i = 0; i < mines; i++) {
-			placeMine();
+			placeMine(board);
+		}
+		for (int x = 0; x < sizeX; x++) {
+			for (int y = 0; y < sizeY; y++) {
+				board[x][y] = calculateCellValue(x, y);
+			}
 		}
 		return board;
 	}
@@ -48,7 +54,7 @@ public class Board {
 	 * 
 	 * @return
 	 */
-	private void placeMine() {
+	private void placeMine(int board[][]) {
 		boolean placed = false;
 		int x = (int) (Math.random() * sizeX);
 		int y = (int) (Math.random() * sizeY);
@@ -56,11 +62,30 @@ public class Board {
 		while (!placed) {
 			if (isCellEmpty(x, y)) {
 				board[x][y] = Cons.MINE;
+				placed = true;
 			} else {
 				x = (int) (Math.random() * sizeX);
 				y = (int) (Math.random() * sizeY);
 			}
 		}
+	}
+
+	/**
+	 * Calculate and initializes the given cell
+	 */
+	private int calculateCellValue(int x, int y) {
+		int bombs = 0;
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				if (x + i >= 0 && y + j >= 0 && x + i < sizeX && y + j < sizeY && x != 0 && y != 0) {
+					if (board[x + i][y + j] == Cons.MINE) {
+						bombs++;
+					}
+				}
+			}
+		}
+		return bombs;
+
 	}
 
 	private boolean isCellEmpty(int x, int y) {
@@ -71,7 +96,21 @@ public class Board {
 		}
 	}
 
-	private int getCellContent(int x, int y) {
+	public int getCellContent(int x, int y) {
 		return board[x][y];
+	}
+
+	public String toString() {
+		String boardToString = "";
+		for (int x = 0; x < sizeX; x++) {
+			String row = "[";
+			for (int y = 0; y < sizeY; y++) {
+				row += Integer.toString(board[x][y]);
+			}
+			row += "]";
+			boardToString += row;
+		}
+		return boardToString;
+
 	}
 }
