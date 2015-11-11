@@ -113,4 +113,12 @@ public class Board {
 		return boardToString;
 
 	}
+
+	public int getSizeX() {
+		return sizeX;
+	}
+
+	public int getSizeY() {
+		return sizeY;
+	}
 }
