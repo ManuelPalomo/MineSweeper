@@ -22,8 +22,9 @@ public class MineGUI {
 		this.height = height;
 		this.length = length;
 		this.board = board;
-		this.buttonGrid = new ButtonGrid(board.getSizeX(), board.getSizeY());
-		this.buttonsPanel = buttonGrid.getButtonPanel();               
+		this.buttonGrid = new ButtonGrid(board.getSizeX(), board.getSizeY(),board);
+		buttonsPanel=buttonGrid.getButtonPanel();
+		
 		this.frame = new JFrame("MineSweeper");
 		frame.add(buttonsPanel);
 
@@ -34,7 +35,5 @@ public class MineGUI {
 		frame.setVisible(true);
 
 	}
-
-
 
 }

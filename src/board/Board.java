@@ -31,7 +31,9 @@ public class Board {
 		}
 		for (int x = 0; x < sizeX; x++) {
 			for (int y = 0; y < sizeY; y++) {
-				board[x][y] = calculateCellValue(x, y);
+				if (board[x][y] != Cons.MINE) {
+					board[x][y] = calculateCellValue(x, y);
+				}
 			}
 		}
 		return board;
