@@ -1,9 +1,5 @@
 package graphics;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -17,14 +13,16 @@ public class MineGUI {
 	private ButtonGrid buttonGrid;
 	private JFrame frame;
 	private JPanel buttonsPanel;
+	public static boolean gameOver;
 
 	public MineGUI(int height, int length, Board board) {
 		this.height = height;
 		this.length = length;
 		this.board = board;
-		this.buttonGrid = new ButtonGrid(board.getSizeX(), board.getSizeY(),board);
-		buttonsPanel=buttonGrid.getButtonPanel();
-		
+		gameOver = false;
+		this.buttonGrid = new ButtonGrid(board.getSizeX(), board.getSizeY(), board);
+		buttonsPanel = buttonGrid.getButtonPanel();
+
 		this.frame = new JFrame("MineSweeper");
 		frame.add(buttonsPanel);
 
@@ -33,6 +31,11 @@ public class MineGUI {
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+
+	}
+
+	public static void gameOver() {
+		gameOver = true;
 
 	}
 

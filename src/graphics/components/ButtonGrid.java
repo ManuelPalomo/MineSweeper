@@ -1,5 +1,6 @@
 package graphics.components;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -10,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import board.Board;
+import graphics.MineGUI;
 import utils.Cons;
 
 public class ButtonGrid {
@@ -45,14 +47,20 @@ public class ButtonGrid {
 	}
 
 	/**
-	 * Paints a button to reflect that it was clicked
+	 * Paints a button to reflect that it was clicked If a bomb is clicked, game
+	 * needs to terminate finish
 	 * 
 	 * @param button
 	 * @param cellContent
 	 */
 	public void paintButton(JButton button, int cellContent) {
+		button.setBackground(Color.white);
+		button.setBorderPainted(false);
+		button.setEnabled(false);
 		if (cellContent == Cons.MINE) {
-			button.setText("Mine");
+			button.setText("*");
+			button.setBackground(Color.red);
+			MineGUI.gameOver();
 		} else {
 			button.setText(Integer.toString(cellContent));
 		}
@@ -64,12 +72,13 @@ public class ButtonGrid {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JButton buttonPressed = (JButton) e.getSource();
-				int x = (int) buttonPressed.getClientProperty("x");
-				int y = (int) buttonPressed.getClientProperty("y");
-				int cellContent = board.getCellContent(x, y);
-				paintButton(buttonPressed, cellContent);
-
+				if (!MineGUI.gameOver) {
+					JButton buttonPressed = (JButton) e.getSource();
+					int x = (int) buttonPressed.getClientProperty("x");
+					int y = (int) buttonPressed.getClientProperty("y");
+					int cellContent = board.getCellContent(x, y);
+					paintButton(buttonPressed, cellContent);
+				}
 			}
 		};
 
