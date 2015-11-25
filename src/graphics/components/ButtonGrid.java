@@ -73,6 +73,14 @@ public class ButtonGrid {
 	}
 
 	/**
+	 * According to the rules, if a blank spot is found, the adjacent squares
+	 * need to be recursively revealed
+	 */
+	public void revealAdjacentBlanks(JButton button) {
+
+	}
+
+	/**
 	 * Iterates all over the button list and repaints all the components back to
 	 * their original look.
 	 */
@@ -109,9 +117,9 @@ public class ButtonGrid {
 	public JPanel getButtonPanel() {
 		return buttonPanel;
 	}
-	
-	public void setBoard(Board board){
-		this.board=board;
+
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 
 }

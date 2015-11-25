@@ -1,13 +1,11 @@
 package main;
 
-import board.Board;
 import graphics.MineGUI;
+import utils.Cons;
 
 public class MineSweeper {
 	public static void main(String[] args) {
-		Board board = new Board(10, 10, 9);
-		MineGUI gui = new MineGUI(800, 800, board);
-		System.out.println(board.toString());
+		MineGUI gui = new MineGUI(800, 800,Cons.EASY);
 
 	}
 }
