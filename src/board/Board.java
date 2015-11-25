@@ -123,4 +123,8 @@ public class Board {
 	public int getSizeY() {
 		return sizeY;
 	}
+	
+	public int getMinesNumber(){
+		return mines;
+	}
 }

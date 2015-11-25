@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -15,16 +17,18 @@ import graphics.MineGUI;
 import utils.Cons;
 
 public class ButtonGrid {
-	private JPanel buttonPanel;
 	private int sizeX;
 	private int sizeY;
 	private Board board;
 	private ActionListener listener;
+	private JPanel buttonPanel;
+	private List<JButton> buttonList;
 
 	public ButtonGrid(int sizeX, int sizeY, Board board) {
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.board = board;
+		this.buttonList = new LinkedList<JButton>();
 		listener = initializeActionListener();
 		this.buttonPanel = fillButtonMatrix(sizeX, sizeY);
 	}
@@ -39,6 +43,7 @@ public class ButtonGrid {
 				button.setPreferredSize(new Dimension(30, 30));
 				button.setMargin(new Insets(0, 0, 0, 0));
 				button.addActionListener(listener);
+				buttonList.add(button);
 				panel.add(button);
 
 			}
@@ -67,6 +72,22 @@ public class ButtonGrid {
 
 	}
 
+	/**
+	 * Iterates all over the button list and repaints all the components back to
+	 * their original look.
+	 */
+	public void resetBoard() {
+		for (JButton button : buttonList) {
+			button.setText("");
+			button.setBackground(null); // Aparently, null is the default color
+										// of the JButton
+			button.setBorderPainted(true);
+			button.setEnabled(true);
+
+		}
+
+	}
+
 	private ActionListener initializeActionListener() {
 		ActionListener listener = new ActionListener() {
 
@@ -87,6 +108,10 @@ public class ButtonGrid {
 
 	public JPanel getButtonPanel() {
 		return buttonPanel;
+	}
+	
+	public void setBoard(Board board){
+		this.board=board;
 	}
 
 }
