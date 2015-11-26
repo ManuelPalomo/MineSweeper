@@ -85,12 +85,19 @@ public class MineGUI {
 		optionsGameMenu.addActionListener(listener);
 		optionsGameMenu.setActionCommand("options");
 
+		JMenuItem showSolutionGameMenu = new JMenuItem("Show Solution");
+		showSolutionGameMenu.addActionListener(listener);
+		showSolutionGameMenu.setActionCommand("solution");
+		
 		JMenuItem exitGameMenu = new JMenuItem("Exit");
 		exitGameMenu.addActionListener(listener);
 		exitGameMenu.setActionCommand("exit");
+		
+		
 
 		gameMenu.add(newGameMenu);
 		gameMenu.add(optionsGameMenu);
+		gameMenu.add(showSolutionGameMenu);
 		gameMenu.add(exitGameMenu);
 
 		menuBar.add(gameMenu);
@@ -199,6 +206,11 @@ public class MineGUI {
 
 				case "options":
 					launchOptionsDialog();
+					break;
+					
+				case "solution":
+					buttonGrid.revealSolution();
+					gameOver=true;
 					break;
 
 				case "exit":

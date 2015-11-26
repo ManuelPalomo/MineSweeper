@@ -77,10 +77,10 @@ public class Board {
 	 */
 	private int calculateCellValue(int x, int y) {
 		int bombs = 0;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				if (x + i >= 0 && y + j >= 0 && x + i < sizeX && y + j < sizeY && x != 0 && y != 0) {
-					if (board[x + i][y + j] == Cons.MINE) {
+		for (int i = x - 1; i < x + 2; i++) {
+			for (int j = y - 1; j < y + 2; j++) {
+				if (i >= 0 && j >= 0 && i < sizeX && j < sizeY && (i != x || j != y)) {
+					if (board[i][j] == Cons.MINE) {
 						bombs++;
 					}
 				}
@@ -123,8 +123,8 @@ public class Board {
 	public int getSizeY() {
 		return sizeY;
 	}
-	
-	public int getMinesNumber(){
+
+	public int getMinesNumber() {
 		return mines;
 	}
 }

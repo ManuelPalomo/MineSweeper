@@ -22,13 +22,13 @@ public class ButtonGrid {
 	private Board board;
 	private ActionListener listener;
 	private JPanel buttonPanel;
-	private List<JButton> buttonList;
+	private JButton[][] buttonMatrix;
 
 	public ButtonGrid(int sizeX, int sizeY, Board board) {
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.board = board;
-		this.buttonList = new LinkedList<JButton>();
+		this.buttonMatrix = new JButton[sizeX][sizeY];
 		listener = initializeActionListener();
 		this.buttonPanel = fillButtonMatrix(sizeX, sizeY);
 	}
@@ -43,7 +43,8 @@ public class ButtonGrid {
 				button.setPreferredSize(new Dimension(30, 30));
 				button.setMargin(new Insets(0, 0, 0, 0));
 				button.addActionListener(listener);
-				buttonList.add(button);
+				buttonMatrix[x][y] = button;
+
 				panel.add(button);
 
 			}
@@ -66,8 +67,21 @@ public class ButtonGrid {
 			button.setText("*");
 			button.setBackground(Color.red);
 			MineGUI.gameOver();
+		} else if (cellContent == Cons.EMPTY) {
+			LinkedList<JButton> checked = new LinkedList<JButton>();
+			revealAdjacentBlanks(button, checked);
 		} else {
 			button.setText(Integer.toString(cellContent));
+		}
+
+	}
+
+	public void revealSolution() {
+		for (JButton[] buttonRow : buttonMatrix) {
+			for (JButton button : buttonRow) {
+				paintButton(button, board.getCellContent((Integer) button.getClientProperty("x"),
+						(Integer) button.getClientProperty("y")));
+			}
 		}
 
 	}
@@ -76,7 +90,25 @@ public class ButtonGrid {
 	 * According to the rules, if a blank spot is found, the adjacent squares
 	 * need to be recursively revealed
 	 */
-	public void revealAdjacentBlanks(JButton button) {
+	public void revealAdjacentBlanks(JButton button, LinkedList<JButton> checkedList) {
+		checkedList.add(button);
+		int buttonX = (Integer) button.getClientProperty("x");
+		int buttonY = (Integer) button.getClientProperty("y");
+
+		button.setBackground(Color.white);
+		button.setBorderPainted(false);
+		button.setEnabled(false);
+		button.setText("");
+
+		for (int x = buttonX - 1; x < buttonX + 2; x++) {
+			for (int y = buttonY - 1; y < buttonY + 2; y++) {
+				if (x >= 0 && x < sizeX && y >= 0 && y < sizeY && board.getCellContent(x, y) == Cons.EMPTY
+						&& (buttonX != x || buttonY != y) && !checkedList.contains(buttonMatrix[x][y])) {
+					checkedList.add(buttonMatrix[x][y]);
+					revealAdjacentBlanks(buttonMatrix[x][y], checkedList);
+				}
+			}
+		}
 
 	}
 
@@ -85,13 +117,15 @@ public class ButtonGrid {
 	 * their original look.
 	 */
 	public void resetBoard() {
-		for (JButton button : buttonList) {
-			button.setText("");
-			button.setBackground(null); // Aparently, null is the default color
-										// of the JButton
-			button.setBorderPainted(true);
-			button.setEnabled(true);
-
+		for (JButton[] buttonRow : buttonMatrix) {
+			for (JButton button : buttonRow) {
+				button.setText("");
+				button.setBackground(null); // Aparently, null is the default
+											// color
+											// of the JButton
+				button.setBorderPainted(true);
+				button.setEnabled(true);
+			}
 		}
 
 	}
